@@ -22,7 +22,7 @@ class Publisher(Node):
         self.linear = 0
 
     def timer_callback(self):
-        print('in pub ', self.angular) # angularna rychlost a linearna rychlost
+        print('in pub ', self.angular) 
         msg = String()
         msg.data = str(self.linear) + "," + str(self.angular)
         self.publisher.publish(msg)
@@ -45,7 +45,7 @@ class Subscriber(Node):
         self.linear = float(msg.data.split(",")[0])
         self.angular = float(msg.data.split(",")[1])
         self.theta = self.theta + self.angular
-        if self.theta > 6.28: # > 360 stupnov
+        if self.theta > 6.28:
             self.theta -= 6.28
         dcenter = self.linear
         self.x += round(dcenter * cos(self.theta), 1)
@@ -186,7 +186,7 @@ class MinimalSubscriber(Node):
 
             self.map[int(self.oldY)][int(self.oldX)] = 0
             self.map[int(y)][int(x)] = self.robot
-            #vymazem zo starej pozicie a dam na novu
+           
 
             degree = [0, 45, 90, 135, 180, 225, 270, 315, 360]
             theta = min(degree, key=lambda x: abs(x - degrees(abs(self.theta - 6.28))))
