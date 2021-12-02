@@ -11,10 +11,10 @@ from pygame.locals import *
 from math import cos, radians, sin, sqrt, pow, atan2, degrees, ceil
 
 
-class Publisher(Node): # publisher v subscriberovi napisany
+class Publisher(Node):
 
     def __init__(self):
-        super().__init__('publisher') # ako sa ma volat node
+        super().__init__('publisher') 
         self.publisher = self.create_publisher(String, 'vel', 10)
         timer_period = 1
         self.timer = self.create_timer(timer_period, self.timer_callback)
@@ -59,8 +59,8 @@ class MinimalSubscriber(Node):
         self.publisher = Publisher()
         self.subscriber = Subscriber()
 
-        self.subscription1 = self.create_subscription(String, 'map', self.listener_callback1, 10) # subscribnem mapu
-        self.subscription2 = self.create_subscription(Pose, 'goal', self.listener_callback2, 10) # subscribnem cielovu poziciu
+        self.subscription1 = self.create_subscription(String, 'map', self.listener_callback1, 10) 
+        self.subscription2 = self.create_subscription(Pose, 'goal', self.listener_callback2, 10) 
         self.subscriptions
         self.robot = 2
         self.x = 1
@@ -82,7 +82,7 @@ class MinimalSubscriber(Node):
         self.robotIMG = pygame.image.load('/home/nmvr/dev_ws/src/zadanieNMvR/zadanieNMvR/robot.png')
 
 
-    def euclidean_distance(self, goal): # toto bolo v tom tutoriali co nam on poslal
+    def euclidean_distance(self, goal): 
         rclpy.spin_once(self.subscriber)
         self.x = self.subscriber.x
         self.y = self.subscriber.y
@@ -94,14 +94,14 @@ class MinimalSubscriber(Node):
     def linear(self):
         return 1
 
-    def steering_angle(self, goal): # toto tiez v tutoriali od cviciaceho
+    def steering_angle(self, goal):
         steering_angle = atan2(goal.y - self.y, goal.x - self.x)
         if steering_angle < 0:
             steering_angle += 6.28
         print('steering angle ', steering_angle)
         return steering_angle
 
-    def angular(self, goal, constant=2): # aj toto z tutoriala
+    def angular(self, goal, constant=2): 
         print('angularvel', constant * (self.steering_angle(goal.x, goal.y) - self.theta))
         return constant * (self.steering_angle(goal.x, goal.y) - self.theta)
 
@@ -120,7 +120,7 @@ class MinimalSubscriber(Node):
             x = ceil(self.x)
         else:
             x = round(self.x)
-        # vypocita mi polohu robota a zaokruhlujem
+        
 
         self.map[int(y)][int(x)] = self.robot
 
@@ -225,9 +225,7 @@ class MinimalSubscriber(Node):
                     self.goal.y = float(y)
                     break
 
-            #ked vidi ze ma prekazku pred sebou tak zastavi a ostane stat pred prekazkou
-
-
+           
             tile_list = []
             row_count = 0
             for row in self.map:
@@ -270,16 +268,16 @@ class MinimalSubscriber(Node):
             self.oldY = y
             i += 1
 
-            difference = abs(self.theta - self.steering_angle(self.goal)) # rozdiel medzi smerom kde mieri a smerom kde by mal mierit
+            difference = abs(self.theta - self.steering_angle(self.goal)) 
             if difference > 0.01:
-                self.publisher.angular = self.steering_angle(self.goal) - self.theta # tak nech vypocita ze ako ma otocit
+                self.publisher.angular = self.steering_angle(self.goal) - self.theta 
             else:
-                self.publisher.angular = 0 # ked je velmi malicky rozdiel tak nech je nula cize nebude menit
+                self.publisher.angular = 0 
 
-            self.publisher.angular = int(degrees(self.publisher.angular)) # prevod z radianov do stupnov
+            self.publisher.angular = int(degrees(self.publisher.angular))
 
             if self.publisher.angular == 45 or self.publisher.angular == 135 or self.publisher.angular == 225 or self.publisher.angular == 315:
-                self.publisher.linear = sqrt(2) # ked pohyb na diagonale tak nech sa pohybuje rychlostou odmocnina z dvoch
+                self.publisher.linear = sqrt(2) 
             else:
                 self.publisher.linear = self.linear()
 
