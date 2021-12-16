@@ -20,9 +20,10 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-        	'pubmap = zadanieNMvR.publisher_map:main',
+        	'map = zadanieNMvR.publisher_map:main',
         	'subscriber = zadanieNMvR.subscriber:main',
-        	'pubpos = zadanieNMvR.publisher_goal:main'
+        	'smer = zadanieNMvR.publisher_goal:main',
+        	'stena = zadanieNMvR.publisher_robot:main'
         ],
     },
 )
