@@ -19,7 +19,7 @@ class MinimalPublisher(Node):
         msg1 = String()
         msg1.data = str(map)
         self.publisher1.publish(msg1)
-        self.get_logger().info('Publishing: "%s"' % msg1.data)
+        # self.get_logger().info('Publishing: "%s"' % msg1.data)
         self.i += 1
         print(self.i)
 
